@@ -1,0 +1,23 @@
+:root {
+	/* ADD VARIABLES */
+}
+
+body {
+	font-size: 100%;
+	/* ADD DEFAULT FONT */
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0px auto;
+	padding: 0px 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	/* ADD HEADING FONT */
+}
