@@ -8,12 +8,12 @@
  * @returns {HTMLElement | NodeListOf<HTMLElement>}
  */
 const get = (selectors, all) => {
-	const e = new Error();
+	if (typeof (selectors) != "string") {
+		throw new ArgumentInvalidTypeException("Parameter selectors must be a string.");
+	}
 
-	if (typeof(selectors) != "string" || String.isNullOrWhiteSpace(selectors)) {
-		e.name = "ArgumentNullException";
-		e.message = "Parameter selectors cannot be undefined, null, an empty string, or a whitespace string.";
-		throw e;
+	if (String.isNullOrWhiteSpace(selectors)) {
+		throw new ArgumentNullException("Parameter selectors cannot be undefined, null, an empty string, or a whitespace string.");
 	}
 
 	if (typeof (all) != "boolean") {
@@ -25,17 +25,13 @@ const get = (selectors, all) => {
 		results = document.querySelectorAll(selectors);
 
 		if (results.length == 0) {
-			e.name = "ElementsNotFoundException";
-			e.message = `Could not find any elements with selector(s): "${selectors}"`;
-			throw e;
+			throw new HTMLElementsNotFoundException(`Could not find any elements with selector(s): "${selectors}"`);
 		}
 	} else {
 		results = document.querySelector(selectors);
 
 		if (results == null) {
-			e.name = "ElementNotFoundException";
-			e.message = `Coud not find any elements with selector(s): "${selectors}"`;
-			throw e;
+			throw new HTMLElementNotFoundException(`Coud not find any elements with selector(s): "${selectors}"`);
 		}
 	}
 
@@ -48,11 +44,12 @@ const get = (selectors, all) => {
  * @returns {HTMLElement}
  */
 const create = (tagName) => {
-	const e = new Error();
-	if (typeof(tagName) != "string" || String.isNullOrWhiteSpace(tagName)) {
-		e.name = "ArgumentNullException";
-		e.message = "Parameter selectors cannot be undefined, null, an empty string, or a whitespace string.";
-		throw e;
+	if (typeof (tagName) != "string") {
+		throw new ArgumentInvalidTypeException("Parameter selectors must be a string.");
+	}
+
+	if (String.isNullOrWhiteSpace(tagName)) {
+		throw new ArgumentNullException("Parameter selectors cannot be undefined, null, an empty string, or a whitespace string.");
 	}
 
 	return document.createElement(tagName);

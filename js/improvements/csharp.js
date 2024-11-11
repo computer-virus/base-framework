@@ -1,6 +1,6 @@
 // A JavaScript file thats make JavaScript work a little more like C#.
 
-// #region String Properties
+// #region String Properties and Methods
 Object.defineProperty(String, "isNullOrWhiteSpace", {
 	/**
 	 * Indicates whether a specified string is null, empty, or consists only of white-space characters.
@@ -9,7 +9,7 @@ Object.defineProperty(String, "isNullOrWhiteSpace", {
 	 */
 	value: function(string) {
 		const e = new Error();
-		
+
 		if (typeof (string) != "string") {
 			e.name = "ArgumentInvalidTypeException";
 			e.message = `Function expected a string argument, got ${typeof (string)} instead.`;
@@ -18,6 +18,11 @@ Object.defineProperty(String, "isNullOrWhiteSpace", {
 
 		return !string || !string.trim();
 	},
+	writable: false
+});
+
+Object.defineProperty(String, "empty", {
+	value: "",
 	writable: false
 });
 
@@ -30,7 +35,7 @@ Object.defineProperty(String.prototype, "contains", {
 	 */
 	value: function(searchString, ignoreCase) {
 		const e = new Error();
-		
+
 		if (typeof (searchString) != "string") {
 			e.name = "ArgumentInvalidTypeException";
 			e.message = `Function expected a string argument, got ${typeof (searchString)} instead.`;
@@ -49,4 +54,87 @@ Object.defineProperty(String.prototype, "contains", {
 	},
 	writable: false
 });
+// #endregion
+
+// #region Exception Classes
+/**
+ * @public
+ */
+class Exception extends Error {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		super();
+
+		this.name = "Exception";
+
+		if (typeof (message) != "string") {
+			this.message = String.empty;
+		} else {
+			this.message = message;
+		}
+	}
+}
+
+/**
+ * @public
+ */
+class ArgumentNullException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		super(message);
+
+		this.name = "ArgumentNullException";
+	}
+}
+
+/**
+ * @public
+ */
+class ArgumentInvalidTypeException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		super(message);
+
+		this.name = "ArgumentInvalidTypeException";
+	}
+}
+
+/**
+ * @public
+ */
+class HTMLElementNotFoundException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		super(message);
+
+		this.name = "HTMLElementNotFoundException";
+	}
+}
+
+/**
+ * @public
+ */
+class HTMLElementsNotFoundException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		super(message);
+
+		this.name = "HTMLElementsNotFoundException";
+	}
+}
 // #endregion
