@@ -1,4 +1,4 @@
-// A JavaScript file thats make JavaScript work a little more like C#.
+// A JavaScript file thats make JavaScript work more like C#, one line at a time.
 
 // #region String Properties and Methods
 Object.defineProperty(String, "isNullOrWhiteSpace", {
