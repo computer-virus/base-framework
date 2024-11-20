@@ -64,7 +64,7 @@ const create = (tagName) => {
  * @returns {number}
  */
 const asc = (a, b) => {
-	return a > b ? 1 : -1;
+	return a < b ? -1 : 1;
 };
 
 /**
@@ -74,6 +74,6 @@ const asc = (a, b) => {
  * @returns {number}
  */
 const desc = (a, b) => {
-	return a < b ? 1 : -1;
+	return a > b ? -1 : 1;
 };
 // #endregion
