@@ -130,16 +130,3 @@ Object.defineProperty(String.prototype, "contains", {
 	writable: false
 });
 // #endregion
-
-// #region Array Properties and Methods
-Object.defineProperty(Array.prototype, "order", {
-	/**
-	 * Returns an array with the elements ordered in ascending order.
-	 * @returns {Array}
-	 */
-	value: function() {
-		return this.splice().sort((a, b) => { return a > b ? 1 : -1; });
-	},
-	writable: false
-});
-// #endregion
