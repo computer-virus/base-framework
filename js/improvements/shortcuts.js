@@ -55,3 +55,25 @@ const create = (tagName) => {
 	return document.createElement(tagName);
 };
 // #endregion
+
+// #region Array sorting comparison functions
+/**
+ * A comparison function to be used to order elements in an array in ascending order.
+ * @param {any} a
+ * @param {any} b
+ * @returns {number}
+ */
+const asc = (a, b) => {
+	return a > b ? 1 : -1;
+};
+
+/**
+ * A comparison function to be used to order elements in an array in descending order.
+ * @param {any} a
+ * @param {any} b
+ * @returns {number}
+ */
+const desc = (a, b) => {
+	return a < b ? 1 : -1;
+};
+// #endregion
