@@ -40,6 +40,21 @@ class ArgumentNullException extends Exception {
 /**
  * @public
  */
+class ArgumentOutOfRangeException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		super(message);
+
+		this.name = "ArgumentOutOfRangeException";
+	}
+}
+
+/**
+ * @public
+ */
 class ArgumentInvalidTypeException extends Exception {
 	/**
 	 * @public
