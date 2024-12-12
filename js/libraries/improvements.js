@@ -215,17 +215,6 @@ const create = (tagName) => {
 const replace = (ref, node) => {
 	ref.parentNode.replaceChild(node, ref);
 };
-
-Object.defineProperty(Element.prototype, "before", {
-	/**
-	 * Inserts a node before the current element.
-	 * @param {Node} node
-	 */
-	value: function(node) {
-		this.parentNode.insertBefore(node, this);
-	},
-	writable: false
-});
 // #endregion
 
 // #region Array sorting comparison functions
