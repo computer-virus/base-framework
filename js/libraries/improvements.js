@@ -213,7 +213,7 @@ const create = (tagName) => {
  * @param {Node} node
  */
 const replace = (ref, node) => {
-	ref.parentNode.replaceChild(ref, node);
+	ref.parentNode.replaceChild(node, ref);
 };
 
 Object.defineProperty(Element.prototype, "before", {
