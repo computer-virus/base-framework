@@ -1,10 +1,8 @@
 :root {
-	/* ADD VARIABLES */
 }
 
 body {
 	font-size: 100%;
-	/* ADD DEFAULT FONT */
 }
 
 .container {
@@ -13,11 +11,8 @@ body {
 	padding: 0px 10px;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	/* ADD HEADING FONT */
+header,
+footer {
+	margin: 0px -10px;
+	padding: 0px 10px;
 }
