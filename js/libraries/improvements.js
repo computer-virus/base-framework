@@ -14,23 +14,63 @@ class Exception extends Error {
 
 		this.name = "Exception";
 
-		if (typeof (message) != "string") {
-			this.message = String.empty;
-		} else {
+		if (typeof (message) == "string") {
 			this.message = message;
+		} else {
+			this.message = "An error has occured.";
 		}
+	}
+}
+
+class NotImplementedException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "This is not implemented.";
+		}
+
+		super(message);
+
+		this.name = "NotImplementedException";
+	}
+}
+
+// #region Argument Exceptions
+/**
+ * @public
+ */
+class ArgumentException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "This argument value caused an error.";
+		}
+
+		super(message);
+
+		this.name = "ArgumentException";
 	}
 }
 
 /**
  * @public
  */
-class ArgumentNullException extends Exception {
+class ArgumentNullException extends ArgumentException {
 	/**
 	 * @public
 	 * @param {string | undefined} message
 	 */
 	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "This argument value is null.";
+		}
+
 		super(message);
 
 		this.name = "ArgumentNullException";
@@ -40,12 +80,16 @@ class ArgumentNullException extends Exception {
 /**
  * @public
  */
-class ArgumentOutOfRangeException extends Exception {
+class ArgumentOutOfRangeException extends ArgumentException {
 	/**
 	 * @public
 	 * @param {string | undefined} message
 	 */
 	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "This argument value is out of range.";
+		}
+
 		super(message);
 
 		this.name = "ArgumentOutOfRangeException";
@@ -55,27 +99,93 @@ class ArgumentOutOfRangeException extends Exception {
 /**
  * @public
  */
-class ArgumentInvalidTypeException extends Exception {
+class ArgumentInvalidTypeException extends ArgumentException {
 	/**
 	 * @public
 	 * @param {string | undefined} message
 	 */
 	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "This argument was not in the expected type.";
+		}
+
 		super(message);
 
 		this.name = "ArgumentInvalidTypeException";
+	}
+}
+// #endregion Argument Exceptions
+
+// #region Format Exceptions
+class FormatException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "This value was not in the expected format.";
+		}
+
+		super(message);
+
+		this.name = "FormatException";
+	}
+}
+// #endregion
+
+// #region Not Found Exceptions
+/**
+ * @public
+ */
+class NotFoundException extends Exception {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "Requested item could not be found.";
+		}
+
+		super(message);
+
+		this.name = "NotFoundException";
 	}
 }
 
 /**
  * @public
  */
-class HTMLElementNotFoundException extends Exception {
+class FileNotFoundException extends NotFoundException {
 	/**
 	 * @public
 	 * @param {string | undefined} message
 	 */
 	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "Requested file could not be found.";
+		}
+
+		super(message);
+
+		this.name = "NotFoundException";
+	}
+}
+
+/**
+ * @public
+ */
+class HTMLElementNotFoundException extends NotFoundException {
+	/**
+	 * @public
+	 * @param {string | undefined} message
+	 */
+	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "Requested HTML element could not be found.";
+		}
+
 		super(message);
 
 		this.name = "HTMLElementNotFoundException";
@@ -85,17 +195,22 @@ class HTMLElementNotFoundException extends Exception {
 /**
  * @public
  */
-class HTMLElementsNotFoundException extends Exception {
+class HTMLElementsNotFoundException extends NotFoundException {
 	/**
 	 * @public
 	 * @param {string | undefined} message
 	 */
 	constructor(message) {
+		if (typeof (message) != "string") {
+			message = "Requested HTML elements could not be found.";
+		}
+
 		super(message);
 
 		this.name = "HTMLElementsNotFoundException";
 	}
 }
+// #endregion
 // #endregion
 
 // #region String Properties and Methods
@@ -154,29 +269,29 @@ Object.defineProperty(String.prototype, "contains", {
 
 // #region HTMLElement Management
 /**
- * Returns the first or all elements that are descentdant of document that match the selectors.
+ * Returns the first or all node(s) that are descentdants of document and match the specified selectors.
  * @param {string} selectors
- * @param {boolean | undefined} all
- * @returns {HTMLElement | NodeListOf<HTMLElement>}
+ * @param {boolean | undefined} allNodes
+ * @returns {Node | Node[]}
  */
-const get = (selectors, all) => {
+const get = (selectors, allNodes) => {
 	if (typeof (selectors) != "string") {
 		throw new ArgumentInvalidTypeException("Parameter selectors must be a string.");
 	}
 
 	if (String.isNullOrWhiteSpace(selectors)) {
-		throw new ArgumentNullException("Parameter selectors cannot be undefined, null, an empty string, or a whitespace string.");
+		throw new ArgumentNullException("Parameter selectors cannot be null, an empty string, or a whitespace string.");
 	}
 
-	if (typeof (all) != "boolean") {
-		all = false;
+	if (typeof (allNodes) != "boolean") {
+		allNodes = false;
 	}
 
 	let results;
-	if (all) {
-		results = document.querySelectorAll(selectors);
+	if (allNodes) {
+		results = Array.from(document.querySelectorAll(selectors));
 
-		if (results.length == 0) {
+		if (results == null || results.length < 1) {
 			throw new HTMLElementsNotFoundException(`Could not find any elements with selector(s): "${selectors}"`);
 		}
 	} else {
@@ -191,29 +306,37 @@ const get = (selectors, all) => {
 };
 
 /**
- * Creates an instance of the element for the specified tag.
- * @param {string} tagName
- * @returns {HTMLElement}
+ * Creates an instance of the node of the specified name.
+ * @param {string} name
+ * @returns {Node}
  */
-const create = (tagName) => {
-	if (typeof (tagName) != "string") {
+const create = (name) => {
+	if (typeof (name) != "string") {
 		throw new ArgumentInvalidTypeException("Parameter selectors must be a string.");
 	}
 
-	if (String.isNullOrWhiteSpace(tagName)) {
-		throw new ArgumentNullException("Parameter selectors cannot be undefined, null, an empty string, or a whitespace string.");
+	if (String.isNullOrWhiteSpace(name)) {
+		throw new ArgumentNullException("Parameter selectors cannot be null, an empty string, or a whitespace string.");
 	}
 
-	return document.createElement(tagName);
+	return document.createElement(name);
 };
 
 /**
- * Replaces the reference node with the given node in the DOM.
- * @param {Node} ref
+ * Replaces the specified reference node with the given node.
+ * @param {Node} referenceNode
  * @param {Node} node
  */
-const replace = (ref, node) => {
-	ref.parentNode.replaceChild(node, ref);
+const replace = (referenceNode, node) => {
+	if (referenceNode == null || referenceNode == undefined) {
+		throw new ArgumentNullException("Parameter referenceNode cannot be null.");
+	}
+
+	if (node == null || node == undefined) {
+		throw new ArgumentNullException("Parameter node cannot be null.");
+	}
+
+	referenceNode.parentNode.replaceChild(node, referenceNode);
 };
 // #endregion
 
