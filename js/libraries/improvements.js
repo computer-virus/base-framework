@@ -1,4 +1,4 @@
-// A JavaScript file thats make JavaScript work more like C#, one line at a time.
+// Code thats make JavaScript work more like C#, one line at a time.
 
 // #region Exception Classes
 /**
@@ -150,7 +150,7 @@ Object.defineProperty(String.prototype, "contains", {
 });
 // #endregion
 
-// A JavaScript file that makes commonly used actions quicker to type.
+// Code that makes commonly used actions quicker to type.
 
 // #region HTMLElement Management
 /**
